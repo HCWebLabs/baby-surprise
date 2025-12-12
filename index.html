@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Join us for the exciting gender reveal of Baby Thompson! Cast your vote and be part of the celebration.">
+    <title>Baby Thompson Gender Reveal 🎈</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --cream: #FDF8F3;
+            --warm-white: #FFFEFA;
+            --blush: #F5E6E0;
+            --sage: #D4DDD4;
+            --gold: #D4A853;
+            --gold-light: #E8C97A;
+            --charcoal: #2D2D2D;
+            --charcoal-soft: #4A4A4A;
+            --reveal-pink: #E8A0BF;
+            --reveal-pink-light: #F5D0E0;
+            --reveal-pink-deep: #C77DA2;
+            --reveal-blue: #89CFF0;
+            --reveal-blue-light: #B8E2F8;
+            --reveal-blue-deep: #5BA3C6;
+            --reveal-primary: var(--reveal-pink);
+            --reveal-light: var(--reveal-pink-light);
+            --reveal-deep: var(--reveal-pink-deep);
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Quicksand', 'Segoe UI', sans-serif;
+            --space-xs: clamp(0.5rem, 1vw, 0.75rem);
+            --space-sm: clamp(0.75rem, 2vw, 1rem);
+            --space-md: clamp(1rem, 3vw, 1.5rem);
+            --space-lg: clamp(1.5rem, 4vw, 2.5rem);
+            --space-xl: clamp(2rem, 6vw, 4rem);
+            --space-2xl: clamp(3rem, 8vw, 6rem);
+            --transition-fast: 150ms ease;
+            --transition-medium: 300ms ease;
+            --transition-slow: 600ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: var(--font-body);
+            background-color: var(--cream);
+            color: var(--charcoal);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            transition: background-color var(--transition-slow);
+        }
+        body.revealed { background-color: var(--reveal-light); }
+        h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.2; text-align: center; }
+        h1 { font-size: clamp(2.5rem, 8vw, 5rem); letter-spacing: 0.02em; }
+        h2 { font-size: clamp(2.25rem, 6vw, 3.5rem); letter-spacing: 0.01em; }
+        h3 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
+        p { font-size: clamp(1.125rem, 2.5vw, 1.25rem); text-align: center; }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 var(--space-md); }
+
+        /* Particles */
+        .particles-container { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .particle { position: absolute; border-radius: 50%; opacity: 0.4; animation: float-particle linear infinite; }
+        .particle--heart { width: 20px; height: 20px; background: none; opacity: 0.3; }
+        .particle--heart::before, .particle--heart::after {
+            content: ''; position: absolute; width: 12px; height: 20px;
+            background: var(--blush); border-radius: 12px 12px 0 0; transition: background var(--transition-slow);
+        }
+        body.revealed .particle--heart::before, body.revealed .particle--heart::after { background: var(--reveal-primary); }
+        .particle--heart::before { left: 10px; transform: rotate(-45deg); transform-origin: 0 100%; }
+        .particle--heart::after { left: 0; transform: rotate(45deg); transform-origin: 100% 100%; }
+        .particle--circle { background: linear-gradient(135deg, var(--gold-light), var(--gold)); }
+        .particle--star { background: var(--gold); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+        @keyframes float-particle {
+            0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; }
+            10% { opacity: 0.4; } 90% { opacity: 0.4; }
+            100% { transform: translateY(-100px) rotate(360deg) scale(1); opacity: 0; }
+        }
+
+        #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1000; }
+
+        /* Header */
+        .header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 80px; display: flex; align-items: flex-start; padding-top: var(--space-sm); background: linear-gradient(to bottom, rgba(253, 248, 243, 1) 0%, rgba(253, 248, 243, 0.6) 50%, rgba(253, 248, 243, 0) 100%); transition: background var(--transition-slow); }
+        body.revealed .header { background: linear-gradient(to bottom, rgba(245, 208, 224, 1) 0%, rgba(245, 208, 224, 0.6) 50%, rgba(245, 208, 224, 0) 100%); }
+        .header__content { display: flex; justify-content: center; align-items: center; width: 100%; }
+        .header__logo { font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 1.5rem); font-style: italic; color: var(--charcoal-soft); text-decoration: none; transition: color var(--transition-medium); }
+        .header__logo:hover { color: var(--gold); }
+
+        /* Hero */
+        .hero { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: var(--space-2xl) var(--space-md); position: relative; overflow: hidden; }
+        .hero__background { position: absolute; inset: 0; background: 
+                radial-gradient(ellipse at 20% 20%, var(--blush) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 60%, var(--sage) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 50%, var(--warm-white) 0%, var(--cream) 100%); z-index: -1; transition: background var(--transition-slow); }
+        body.revealed .hero__background { background: 
+                radial-gradient(ellipse at 20% 20%, var(--reveal-primary) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 60%, var(--reveal-light) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 50%, var(--warm-white) 0%, var(--reveal-light) 100%); }
+        .hero__content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; width: 100%; }
+        .hero__eyebrow { font-family: var(--font-body); font-size: clamp(0.875rem, 2vw, 1rem); font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-sm); text-align: center; opacity: 0; animation: fadeSlideUp 800ms ease forwards; animation-delay: 200ms; }
+        .hero__title { color: var(--charcoal); margin-bottom: var(--space-sm); text-align: center; opacity: 0; animation: fadeSlideUp 800ms ease forwards; animation-delay: 400ms; }
+        .hero__subtitle { font-family: var(--font-display); font-style: italic; font-size: clamp(1.25rem, 4vw, 2rem); color: var(--charcoal-soft); margin-bottom: var(--space-xl); text-align: center; opacity: 0; animation: fadeSlideUp 800ms ease forwards; animation-delay: 600ms; }
+        @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Balloon */
+        .balloon-container { position: relative; width: clamp(200px, 50vw, 300px); height: clamp(260px, 65vw, 390px); margin: 0 auto var(--space-lg); cursor: pointer; opacity: 0; animation: fadeSlideUp 800ms ease forwards, balloon-float 3s ease-in-out infinite; animation-delay: 800ms, 1600ms; }
+        .balloon-container.popped { animation: balloon-pop 400ms ease forwards; pointer-events: none; }
+        .balloon-container.hidden { display: none; }
+        @keyframes balloon-float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-15px) rotate(2deg); } }
+        @keyframes balloon-pop { 0% { transform: scale(1); opacity: 1; } 30% { transform: scale(1.3); } 100% { transform: scale(0); opacity: 0; } }
+        .balloon { position: relative; width: 100%; height: calc(100% - 50px); background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, #B8923F 100%); border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%; box-shadow: inset -30px -30px 60px rgba(0, 0, 0, 0.1), inset 20px 20px 40px rgba(255, 255, 255, 0.4), 0 20px 60px rgba(0, 0, 0, 0.15); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .balloon::before { content: ''; position: absolute; top: 15%; left: 20%; width: 25%; height: 35%; background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, transparent 100%); border-radius: 50%; filter: blur(8px); }
+        .balloon::after { content: '?'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: var(--font-display); font-size: clamp(4rem, 15vw, 8rem); font-weight: 600; color: rgba(255, 255, 255, 0.9); text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); }
+        .balloon-container:hover .balloon { transform: scale(1.05); box-shadow: inset -30px -30px 60px rgba(0, 0, 0, 0.1), inset 20px 20px 40px rgba(255, 255, 255, 0.4), 0 30px 80px rgba(0, 0, 0, 0.2); }
+        .balloon-knot { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); width: 14px; height: 10px; background: #B8923F; border-radius: 0 0 50% 50%; transition: transform 0.2s ease; }
+        .balloon-container:hover .balloon-knot { transform: translateX(-50%) scale(1.05); }
+        .balloon-string { position: absolute; bottom: -20px; left: calc(50% - 15px); width: 30px; height: 70px; overflow: visible; transition: transform 0.2s ease; transform-origin: top center; z-index: -1; }
+        .balloon-container:hover .balloon-string { transform: scale(1.05); }
+        .balloon-string svg { width: 100%; height: 100%; }
+        @keyframes string-sway { 0%, 100% { transform: translateX(-50%) rotate(-3deg); } 50% { transform: translateX(-50%) rotate(3deg); } }
+        .cta-text { font-family: var(--font-body); font-size: clamp(0.875rem, 2vw, 1rem); font-weight: 600; color: var(--charcoal-soft); text-align: center; opacity: 0; animation: fadeSlideUp 800ms ease forwards, pulse-glow 2s ease-in-out infinite; animation-delay: 1200ms, 2000ms; }
+        .cta-text.hidden { display: none; }
+        @keyframes pulse-glow { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+
+        /* Reveal Result */
+        .reveal-result { display: none; text-align: center; opacity: 0; transform: scale(0.5); }
+        .reveal-result.visible { display: block; animation: revealBounce 800ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards; }
+        @keyframes revealBounce { 0% { opacity: 0; transform: scale(0.5); } 50% { transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
+        .reveal-result__title { font-size: clamp(3rem, 12vw, 7rem); color: var(--reveal-deep); text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.1); margin-bottom: var(--space-sm); text-align: center; }
+        .reveal-result__name { font-family: var(--font-display); font-style: italic; font-size: clamp(1.5rem, 5vw, 2.5rem); color: var(--charcoal-soft); text-align: center; margin-bottom: var(--space-lg); }
+
+        /* Reset Button */
+        .reset-btn { display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-sm) var(--space-md); font-family: var(--font-body); font-size: 0.875rem; font-weight: 600; color: var(--charcoal-soft); background: rgba(255, 255, 255, 0.8); border: 2px solid var(--charcoal-soft); border-radius: 30px; cursor: pointer; transition: all var(--transition-medium); opacity: 0; animation: fadeSlideUp 600ms ease forwards; animation-delay: 1000ms; }
+        .reset-btn:hover { background: var(--charcoal); color: var(--warm-white); border-color: var(--charcoal); transform: translateY(-2px); }
+
+        /* Poll Section */
+        .poll-section { padding: var(--space-2xl) 0; background: linear-gradient(180deg, transparent, var(--blush) 20%, var(--blush) 80%, transparent); position: relative; transition: background var(--transition-slow); }
+        body.revealed .poll-section { background: linear-gradient(180deg, transparent, var(--reveal-light) 20%, var(--reveal-light) 80%, transparent); }
+        .poll-section__inner { max-width: 900px; margin: 0 auto; text-align: center; }
+        .poll-section__title { margin-bottom: var(--space-xs); text-align: center; opacity: 0; transform: translateY(30px); transition: opacity 600ms ease, transform 600ms ease; }
+        .poll-section__title.animate-in { opacity: 1; transform: translateY(0); }
+        .poll-section__subtitle { color: var(--charcoal-soft); margin-bottom: var(--space-lg); text-align: center; opacity: 0; transform: translateY(30px); transition: opacity 600ms ease 100ms, transform 600ms ease 100ms; }
+        .poll-section__subtitle.animate-in { opacity: 1; transform: translateY(0); }
+        .poll-buttons { display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap; margin-bottom: var(--space-lg); opacity: 0; transform: translateY(30px); transition: opacity 600ms ease 200ms, transform 600ms ease 200ms; }
+        .poll-buttons.animate-in { opacity: 1; transform: translateY(0); }
+        .poll-btn { flex: 1; min-width: 200px; max-width: 300px; padding: var(--space-md) var(--space-xl); font-family: var(--font-body); font-size: clamp(1.125rem, 2.5vw, 1.25rem); font-weight: 600; border: 3px solid transparent; border-radius: 60px; cursor: pointer; transition: all var(--transition-bounce); position: relative; overflow: hidden; }
+        .poll-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent); opacity: 0; transition: opacity var(--transition-medium); }
+        .poll-btn:hover::before { opacity: 1; }
+        .poll-btn--boy { background: linear-gradient(135deg, var(--reveal-blue-light), var(--reveal-blue)); color: #1a5276; border-color: var(--reveal-blue-deep); box-shadow: 0 8px 30px rgba(137, 207, 240, 0.4); }
+        .poll-btn--boy:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 40px rgba(137, 207, 240, 0.5); }
+        .poll-btn--girl { background: linear-gradient(135deg, var(--reveal-pink-light), var(--reveal-pink)); color: #7b2d52; border-color: var(--reveal-pink-deep); box-shadow: 0 8px 30px rgba(232, 160, 191, 0.4); }
+        .poll-btn--girl:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 40px rgba(232, 160, 191, 0.5); }
+        .poll-btn.voted { transform: scale(1.05); box-shadow: 0 0 0 4px var(--gold); }
+        .poll-btn:disabled { cursor: default; opacity: 0.8; }
+        .poll-btn:disabled:hover { transform: none; }
+        .poll-btn:disabled.voted:hover { transform: scale(1.05); }
+        .poll-results { opacity: 0; transform: translateY(30px); transition: opacity 600ms ease 300ms, transform 600ms ease 300ms; }
+        .poll-results.animate-in { opacity: 1; transform: translateY(0); }
+        .poll-results__title { font-size: clamp(1rem, 2vw, 1.125rem); text-transform: uppercase; letter-spacing: 0.15em; color: var(--charcoal-soft); margin-bottom: var(--space-sm); text-align: center; }
+        .poll-bar-container { display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs); }
+        .poll-bar-label { flex-shrink: 0; width: 65px; font-weight: 600; font-size: 1rem; }
+        .poll-bar-label--boy { color: var(--reveal-blue-deep); text-align: right; }
+        .poll-bar-label--girl { color: var(--reveal-pink-deep); text-align: left; }
+        .poll-bar { flex: 1; height: 24px; background: var(--warm-white); border-radius: 12px; overflow: hidden; box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1); }
+        .poll-bar__fill { height: 100%; border-radius: 12px; transition: width 800ms cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+        .poll-bar__fill--boy { background: linear-gradient(90deg, var(--reveal-blue-light), var(--reveal-blue)); float: right; }
+        .poll-bar__fill--girl { background: linear-gradient(90deg, var(--reveal-pink), var(--reveal-pink-light)); }
+        .poll-bar__fill::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); animation: shimmer 2s ease-in-out infinite; }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .poll-total { font-size: 1rem; color: var(--charcoal-soft); margin-top: var(--space-sm); text-align: center; }
+
+        /* Countdown Section */
+        .countdown-section { padding: var(--space-2xl) 0; text-align: center; background: var(--cream); position: relative; transition: background var(--transition-slow); }
+        body.revealed .countdown-section { background: var(--reveal-light); }
+        .countdown-section__title { margin-bottom: var(--space-xs); text-align: center; opacity: 0; transform: translateY(30px); transition: opacity 600ms ease, transform 600ms ease; }
+        .countdown-section__title.animate-in { opacity: 1; transform: translateY(0); }
+        .countdown-section__subtitle { font-family: var(--font-display); font-style: italic; font-size: clamp(1.125rem, 3vw, 1.5rem); color: var(--charcoal-soft); margin-bottom: var(--space-xl); text-align: center; opacity: 0; transform: translateY(30px); transition: opacity 600ms ease 100ms, transform 600ms ease 100ms; }
+        .countdown-section__subtitle.animate-in { opacity: 1; transform: translateY(0); }
+        .countdown { display: flex; justify-content: center; gap: var(--space-sm); flex-wrap: wrap; opacity: 0; transform: translateY(30px); transition: opacity 600ms ease 200ms, transform 600ms ease 200ms; }
+        .countdown.animate-in { opacity: 1; transform: translateY(0); }
+        .countdown__item { display: flex; flex-direction: column; align-items: center; min-width: clamp(90px, 20vw, 150px); padding: var(--space-lg); background: var(--warm-white); border-radius: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1); position: relative; overflow: hidden; transition: background var(--transition-slow); }
+        body.revealed .countdown__item { background: rgba(255, 255, 255, 0.8); }
+        .countdown__item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--gold-light), var(--gold)); transition: background var(--transition-slow); }
+        body.revealed .countdown__item::before { background: linear-gradient(90deg, var(--reveal-light), var(--reveal-primary)); }
+        .countdown__number { font-family: var(--font-display); font-size: clamp(3rem, 12vw, 5rem); font-weight: 600; color: var(--charcoal); line-height: 1; position: relative; }
+        .countdown__number--flip { animation: flip-number 300ms ease; }
+        @keyframes flip-number { 0% { transform: perspective(400px) rotateX(0); } 50% { transform: perspective(400px) rotateX(-90deg); opacity: 0.5; } 100% { transform: perspective(400px) rotateX(0); } }
+        .countdown__label { font-size: clamp(0.75rem, 2vw, 0.9rem); text-transform: uppercase; letter-spacing: 0.1em; color: var(--charcoal-soft); margin-top: var(--space-xs); text-align: center; }
+
+        /* Details Section */
+        .details-section { padding: var(--space-2xl) 0; background: linear-gradient(180deg, transparent 0%, transparent 5%, var(--sage) 30%, var(--sage) 70%, transparent 95%, transparent 100%); transition: background var(--transition-slow); }
+        body.revealed .details-section { background: linear-gradient(180deg, transparent 0%, transparent 5%, var(--reveal-primary) 30%, var(--reveal-primary) 70%, transparent 95%, transparent 100%); }
+        .details-section__inner { max-width: 800px; margin: 0 auto; text-align: center; }
+        .details-section__title { margin-bottom: var(--space-lg); text-align: center; opacity: 0; transform: translateY(30px); transition: opacity 600ms ease, transform 600ms ease; }
+        .details-section__title.animate-in { opacity: 1; transform: translateY(0); }
+        .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-xl); }
+        .detail-card { padding: var(--space-lg); background: var(--warm-white); border-radius: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); text-align: center; opacity: 0; transform: translateY(30px); transition: opacity 600ms ease, transform 600ms ease, box-shadow var(--transition-medium), background var(--transition-slow); }
+        .detail-card.animate-in { opacity: 1; transform: translateY(0); }
+        .detail-card:hover { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); }
+        body.revealed .detail-card { background: rgba(255, 255, 255, 0.9); }
+        .detail-card:nth-child(1) { transition-delay: 100ms; }
+        .detail-card:nth-child(2) { transition-delay: 200ms; }
+        .detail-card:nth-child(3) { transition-delay: 300ms; }
+        .detail-card__icon { font-size: 2.5rem; margin-bottom: var(--space-sm); text-align: center; }
+        .detail-card__title { font-family: var(--font-display); font-size: 1.25rem; color: var(--charcoal); margin-bottom: var(--space-xs); text-align: center; }
+        .detail-card__text { font-size: 1.0625rem; color: var(--charcoal-soft); line-height: 1.5; text-align: center; }
+        .rsvp-btn { display: inline-flex; align-items: center; gap: var(--space-sm); padding: var(--space-md) var(--space-xl); font-family: var(--font-body); font-size: clamp(1rem, 2.5vw, 1.125rem); font-weight: 600; color: var(--warm-white); background: linear-gradient(135deg, var(--charcoal), var(--charcoal-soft)); border: none; border-radius: 60px; cursor: pointer; text-decoration: none; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); opacity: 0; transform: translateY(30px); transition: opacity 600ms ease 400ms, transform 600ms ease 400ms, box-shadow var(--transition-medium), background var(--transition-medium); }
+        .rsvp-btn.animate-in { opacity: 1; transform: translateY(0); }
+        .rsvp-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25); }
+        body.revealed .rsvp-btn { background: linear-gradient(135deg, var(--reveal-deep), var(--reveal-primary)); }
+        .rsvp-btn__icon { font-size: 1.25rem; }
+
+        /* Footer */
+        .footer { padding: var(--space-xl) 0 var(--space-lg); text-align: center; background: var(--cream); transition: background var(--transition-slow); }
+        body.revealed .footer { background: var(--reveal-light); }
+        .footer__message { font-family: var(--font-display); font-style: italic; font-size: clamp(1.125rem, 3vw, 1.5rem); color: var(--charcoal-soft); max-width: 500px; margin: 0 auto var(--space-lg); text-align: center; }
+        .footer__parents { font-weight: 600; color: var(--charcoal); margin-bottom: var(--space-md); text-align: center; }
+        .share-buttons { display: flex; justify-content: center; gap: var(--space-sm); margin-bottom: var(--space-lg); }
+        .share-btn { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: var(--warm-white); border: 2px solid var(--blush); border-radius: 50%; color: var(--charcoal-soft); text-decoration: none; font-size: 1.25rem; transition: all var(--transition-medium); }
+        .share-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--warm-white); transform: translateY(-3px); }
+        body.revealed .share-btn { border-color: var(--reveal-primary); }
+        body.revealed .share-btn:hover { background: var(--reveal-deep); border-color: var(--reveal-deep); }
+        .footer__eco { font-size: 0.8125rem; color: var(--charcoal-soft); opacity: 0.8; text-align: center; }
+        .footer__eco span { color: #4CAF50; }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+            .balloon-container { animation: none; opacity: 1; }
+            .particle { display: none; }
+            .hero__eyebrow, .hero__title, .hero__subtitle, .cta-text, .scroll-indicator { opacity: 1; }
+        }
+        .poll-btn:focus-visible, .rsvp-btn:focus-visible, .share-btn:focus-visible, .balloon-container:focus-visible, .reset-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .poll-buttons { flex-direction: column; align-items: center; }
+            .poll-btn { width: 100%; max-width: 280px; }
+            .countdown { gap: var(--space-xs); }
+            .countdown__item { min-width: 65px; padding: var(--space-sm); }
+        }
+        @media (min-width: 768px) { .details-grid { grid-template-columns: repeat(3, 1fr); } }
+    </style>
+</head>
+<body>
+    <div class="particles-container" id="particles" aria-hidden="true"></div>
+    <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+    <header class="header">
+        <div class="container header__content">
+            <a href="#" class="header__logo">The Thompsons</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="hero">
+            <div class="hero__background" aria-hidden="true"></div>
+            <div class="hero__content">
+                <p class="hero__eyebrow">Exciting News!</p>
+                <h1 class="hero__title">Baby Thompson</h1>
+                <p class="hero__subtitle">is on the way!</p>
+                
+                <div class="balloon-container" id="balloon-container" tabindex="0" role="button" aria-label="Click to reveal baby's gender">
+                    <div class="balloon" id="balloon"></div>
+                    <div class="balloon-knot" aria-hidden="true"></div>
+                    <div class="balloon-string" aria-hidden="true"><svg viewBox="0 0 30 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0 Q20 25, 10 45 Q5 58, 15 70" stroke="#8B6914" stroke-width="2" fill="none"/></svg></div>
+                </div>
+                
+                <p class="cta-text" id="cta-text">Tap the balloon to reveal!</p>
+                
+                <div class="reveal-result" id="reveal-result" aria-live="polite">
+                    <h2 class="reveal-result__title">It's a Girl!</h2>
+                    <p class="reveal-result__name">Welcome, Baby Olivia 💕</p>
+                    <button class="reset-btn" id="reset-btn" aria-label="Reset and try again">🎈 Pop Again</button>
+                </div>
+            </div>
+            
+        </section>
+
+        <section class="poll-section" id="poll">
+            <div class="container poll-section__inner">
+                <h2 class="poll-section__title">What's Your Guess?</h2>
+                <p class="poll-section__subtitle">Cast your vote before the big reveal!</p>
+                
+                <div class="poll-buttons">
+                    <button class="poll-btn poll-btn--boy" id="vote-boy" aria-label="Vote for boy">👶 Team Boy</button>
+                    <button class="poll-btn poll-btn--girl" id="vote-girl" aria-label="Vote for girl">👶 Team Girl</button>
+                </div>
+                
+                <div class="poll-results">
+                    <p class="poll-results__title">Current Predictions</p>
+                    <div class="poll-bar-container">
+                        <span class="poll-bar-label poll-bar-label--boy" id="boy-percent">42%</span>
+                        <div class="poll-bar"><div class="poll-bar__fill poll-bar__fill--boy" id="boy-bar" style="width: 42%"></div></div>
+                        <div class="poll-bar"><div class="poll-bar__fill poll-bar__fill--girl" id="girl-bar" style="width: 58%"></div></div>
+                        <span class="poll-bar-label poll-bar-label--girl" id="girl-percent">58%</span>
+                    </div>
+                    <p class="poll-total"><span id="total-votes">127</span> votes cast</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="countdown-section" id="countdown-section">
+            <div class="container">
+                <h2 class="countdown-section__title">The Big Arrival</h2>
+                <p class="countdown-section__subtitle">Baby Thompson is expected...</p>
+                
+                <div class="countdown" role="timer" aria-label="Countdown to due date">
+                    <div class="countdown__item"><span class="countdown__number" id="countdown-days">--</span><span class="countdown__label">Days</span></div>
+                    <div class="countdown__item"><span class="countdown__number" id="countdown-hours">--</span><span class="countdown__label">Hours</span></div>
+                    <div class="countdown__item"><span class="countdown__number" id="countdown-minutes">--</span><span class="countdown__label">Minutes</span></div>
+                    <div class="countdown__item"><span class="countdown__number" id="countdown-seconds">--</span><span class="countdown__label">Seconds</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="details-section" id="details">
+            <div class="container details-section__inner">
+                <h2 class="details-section__title">Join the Celebration</h2>
+                
+                <div class="details-grid">
+                    <article class="detail-card">
+                        <div class="detail-card__icon" aria-hidden="true">📅</div>
+                        <h3 class="detail-card__title">When</h3>
+                        <p class="detail-card__text">Saturday, January 18th, 2025<br>2:00 PM - 5:00 PM</p>
+                    </article>
+                    <article class="detail-card">
+                        <div class="detail-card__icon" aria-hidden="true">📍</div>
+                        <h3 class="detail-card__title">Where</h3>
+                        <p class="detail-card__text">The Garden Room<br>425 Maple Street<br>Knoxville, TN 37919</p>
+                    </article>
+                    <article class="detail-card">
+                        <div class="detail-card__icon" aria-hidden="true">🎁</div>
+                        <h3 class="detail-card__title">Registry</h3>
+                        <p class="detail-card__text">Your presence is our present!<br><a href="#" style="color: var(--gold);">View Registry →</a></p>
+                    </article>
+                </div>
+                
+                <a href="mailto:thompson.baby2025@email.com?subject=RSVP%20-%20Baby%20Thompson%20Shower" class="rsvp-btn"><span class="rsvp-btn__icon">💌</span>RSVP Now</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer__message">"We can't wait to share this new chapter of our lives with the people we love most."</p>
+            <p class="footer__parents">With love, Sarah & Michael Thompson</p>
+            
+            <div class="share-buttons">
+                <a href="#" class="share-btn" aria-label="Share on Facebook" title="Share on Facebook"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                <a href="#" class="share-btn" aria-label="Share on Twitter" title="Share on Twitter"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                <a href="#" class="share-btn" aria-label="Copy link" title="Copy link"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M13.723 18.654l-3.61 3.609c-2.316 2.315-6.063 2.315-8.378 0-2.315-2.316-2.315-6.062 0-8.377l3.61-3.61 1.415 1.415-3.61 3.609c-1.534 1.535-1.534 4.014 0 5.548 1.535 1.535 4.014 1.535 5.549 0l3.61-3.61 1.414 1.416zm-1.446-12.378l3.61-3.61c2.315-2.315 6.062-2.315 8.377 0 2.316 2.316 2.316 6.063 0 8.378l-3.61 3.609-1.414-1.414 3.609-3.61c1.535-1.534 1.535-4.013 0-5.548-1.534-1.534-4.013-1.534-5.548 0l-3.61 3.61-1.414-1.415zm3.767 1.404l-6.364 6.364-1.414-1.415 6.364-6.363 1.414 1.414z"/></svg></a>
+            </div>
+            
+            <p class="footer__eco"><span>🌱</span> An eco-friendly digital celebration — no balloons were harmed!</p>
+        </div>
+    </footer>
+
+    <script>
+        const CONFIG = {
+            revealGender: 'girl',
+            babyName: 'Olivia',
+            dueDate: new Date(2026, 3, 15, 0, 0, 0), // April 15, 2026
+            initialVotes: { boy: 53, girl: 74 }
+        };
+
+        const state = {
+            revealed: false,
+            voted: localStorage.getItem('babyRevealVote'),
+            votes: { boy: CONFIG.initialVotes.boy, girl: CONFIG.initialVotes.girl },
+            countdownInterval: null
+        };
+
+        const elements = {
+            body: document.body,
+            balloonContainer: document.getElementById('balloon-container'),
+            balloon: document.getElementById('balloon'),
+            ctaText: document.getElementById('cta-text'),
+            revealResult: document.getElementById('reveal-result'),
+            resetBtn: document.getElementById('reset-btn'),
+            confettiCanvas: document.getElementById('confetti-canvas'),
+            particlesContainer: document.getElementById('particles'),
+            voteButtons: { boy: document.getElementById('vote-boy'), girl: document.getElementById('vote-girl') },
+            pollBars: { boy: document.getElementById('boy-bar'), girl: document.getElementById('girl-bar') },
+            pollPercents: { boy: document.getElementById('boy-percent'), girl: document.getElementById('girl-percent') },
+            totalVotes: document.getElementById('total-votes'),
+            countdown: {
+                days: document.getElementById('countdown-days'),
+                hours: document.getElementById('countdown-hours'),
+                minutes: document.getElementById('countdown-minutes'),
+                seconds: document.getElementById('countdown-seconds')
+            }
+        };
+
+        function createParticles() {
+            const container = elements.particlesContainer;
+            container.innerHTML = '';
+            const particleCount = window.innerWidth < 768 ? 15 : 25;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                const type = ['heart', 'circle', 'star'][Math.floor(Math.random() * 3)];
+                particle.className = 'particle particle--' + type;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (8 + Math.random() * 12) + 's';
+                particle.style.animationDelay = (Math.random() * 10) + 's';
+                if (type === 'circle') { const size = 8 + Math.random() * 12; particle.style.width = size + 'px'; particle.style.height = size + 'px'; }
+                else if (type === 'star') { const size = 12 + Math.random() * 8; particle.style.width = size + 'px'; particle.style.height = size + 'px'; }
+                container.appendChild(particle);
+            }
+        }
+
+        class ConfettiSystem {
+            constructor(canvas) {
+                this.canvas = canvas; this.ctx = canvas.getContext('2d'); this.particles = []; this.running = false;
+                this.resize(); window.addEventListener('resize', () => this.resize());
+            }
+            resize() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; }
+            createParticle(x, y, color) {
+                return { x, y, vx: (Math.random() - 0.5) * 20, vy: Math.random() * -20 - 10, gravity: 0.5, drag: 0.99,
+                    rotation: Math.random() * 360, rotationSpeed: (Math.random() - 0.5) * 15,
+                    width: 8 + Math.random() * 8, height: 6 + Math.random() * 6, color, opacity: 1, fadeRate: 0.005 + Math.random() * 0.005 };
+            }
+            burst(x, y, colors, count = 150) {
+                for (let i = 0; i < count; i++) { this.particles.push(this.createParticle(x, y, colors[Math.floor(Math.random() * colors.length)])); }
+                if (!this.running) { this.running = true; this.animate(); }
+            }
+            clear() { this.particles = []; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); }
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.particles = this.particles.filter(p => {
+                    p.vy += p.gravity; p.vx *= p.drag; p.vy *= p.drag; p.x += p.vx; p.y += p.vy;
+                    p.rotation += p.rotationSpeed; p.opacity -= p.fadeRate;
+                    if (p.opacity <= 0) return false;
+                    this.ctx.save(); this.ctx.translate(p.x, p.y); this.ctx.rotate(p.rotation * Math.PI / 180);
+                    this.ctx.globalAlpha = p.opacity; this.ctx.fillStyle = p.color;
+                    this.ctx.fillRect(-p.width / 2, -p.height / 2, p.width, p.height); this.ctx.restore();
+                    return true;
+                });
+                if (this.particles.length > 0) { requestAnimationFrame(() => this.animate()); } else { this.running = false; }
+            }
+        }
+        const confetti = new ConfettiSystem(elements.confettiCanvas);
+
+        function triggerReveal() {
+            if (state.revealed) return;
+            state.revealed = true;
+            const root = document.documentElement;
+            if (CONFIG.revealGender === 'boy') {
+                root.style.setProperty('--reveal-primary', '#89CFF0');
+                root.style.setProperty('--reveal-light', '#B8E2F8');
+                root.style.setProperty('--reveal-deep', '#5BA3C6');
+            } else {
+                root.style.setProperty('--reveal-primary', '#E8A0BF');
+                root.style.setProperty('--reveal-light', '#F5D0E0');
+                root.style.setProperty('--reveal-deep', '#C77DA2');
+            }
+            const genderText = CONFIG.revealGender === 'girl' ? 'Girl' : 'Boy';
+            const emoji = CONFIG.revealGender === 'girl' ? '💕' : '💙';
+            elements.revealResult.querySelector('.reveal-result__title').textContent = "It's a " + genderText + "!";
+            elements.revealResult.querySelector('.reveal-result__name').textContent = CONFIG.babyName ? 'Welcome, Baby ' + CONFIG.babyName + ' ' + emoji : 'Baby Thompson ' + emoji;
+            elements.balloonContainer.classList.add('popped');
+            elements.ctaText.classList.add('hidden');
+            const rect = elements.balloonContainer.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const colors = CONFIG.revealGender === 'girl' 
+                ? ['#E8A0BF', '#F5D0E0', '#C77DA2', '#FFB6C1', '#FF69B4', '#FFFFFF']
+                : ['#89CFF0', '#B8E2F8', '#5BA3C6', '#ADD8E6', '#87CEEB', '#FFFFFF'];
+            setTimeout(() => {
+                confetti.burst(centerX, centerY, colors, 200);
+                setTimeout(() => confetti.burst(centerX - 100, centerY, colors, 80), 200);
+                setTimeout(() => confetti.burst(centerX + 100, centerY, colors, 80), 300);
+            }, 300);
+            setTimeout(() => {
+                elements.balloonContainer.classList.add('hidden');
+                elements.revealResult.classList.add('visible');
+                elements.body.classList.add('revealed');
+            }, 500);
+            playPopSound();
+        }
+
+        function resetReveal() {
+            state.revealed = false;
+            elements.body.classList.remove('revealed');
+            const root = document.documentElement;
+            root.style.removeProperty('--reveal-primary');
+            root.style.removeProperty('--reveal-light');
+            root.style.removeProperty('--reveal-deep');
+            elements.revealResult.classList.remove('visible');
+            elements.balloonContainer.classList.remove('popped', 'hidden');
+            elements.balloonContainer.style.animation = 'none';
+            elements.balloonContainer.offsetHeight;
+            elements.balloonContainer.style.animation = '';
+            elements.ctaText.classList.remove('hidden');
+            confetti.clear();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function playPopSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                oscillator.connect(gainNode); gainNode.connect(audioContext.destination);
+                oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                oscillator.start(audioContext.currentTime); oscillator.stop(audioContext.currentTime + 0.1);
+            } catch (e) {}
+        }
+
+        elements.balloonContainer.addEventListener('click', triggerReveal);
+        elements.balloonContainer.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerReveal(); } });
+        elements.resetBtn.addEventListener('click', resetReveal);
+
+        function updatePollDisplay() {
+            const total = state.votes.boy + state.votes.girl;
+            const boyPercent = Math.round((state.votes.boy / total) * 100);
+            const girlPercent = 100 - boyPercent;
+            elements.pollBars.boy.style.width = boyPercent + '%';
+            elements.pollBars.girl.style.width = girlPercent + '%';
+            elements.pollPercents.boy.textContent = boyPercent + '%';
+            elements.pollPercents.girl.textContent = girlPercent + '%';
+            elements.totalVotes.textContent = total;
+        }
+
+        function handleVote(gender) {
+            if (state.voted) return;
+            state.voted = gender;
+            localStorage.setItem('babyRevealVote', gender);
+            state.votes[gender]++;
+            updatePollDisplay();
+            elements.voteButtons[gender].classList.add('voted');
+            Object.values(elements.voteButtons).forEach(btn => btn.disabled = true);
+        }
+
+        if (state.voted) {
+            elements.voteButtons[state.voted].classList.add('voted');
+            Object.values(elements.voteButtons).forEach(btn => btn.disabled = true);
+        }
+        updatePollDisplay();
+        elements.voteButtons.boy.addEventListener('click', () => handleVote('boy'));
+        elements.voteButtons.girl.addEventListener('click', () => handleVote('girl'));
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = CONFIG.dueDate.getTime() - now.getTime();
+            if (diff <= 0) {
+                elements.countdown.days.textContent = '00';
+                elements.countdown.hours.textContent = '00';
+                elements.countdown.minutes.textContent = '00';
+                elements.countdown.seconds.textContent = '00';
+                if (state.countdownInterval) { clearInterval(state.countdownInterval); }
+                return;
+            }
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            const updateWithFlip = (element, value) => {
+                const strValue = value.toString().padStart(2, '0');
+                if (element.textContent !== strValue) {
+                    element.classList.add('countdown__number--flip');
+                    setTimeout(() => { element.textContent = strValue; element.classList.remove('countdown__number--flip'); }, 150);
+                }
+            };
+            updateWithFlip(elements.countdown.days, days);
+            updateWithFlip(elements.countdown.hours, hours);
+            updateWithFlip(elements.countdown.minutes, minutes);
+            updateWithFlip(elements.countdown.seconds, seconds);
+        }
+        updateCountdown();
+        state.countdownInterval = setInterval(updateCountdown, 1000);
+
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.2 };
+        const animateOnScroll = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.poll-section__title, .poll-section__subtitle, .poll-buttons, .poll-results, .countdown-section__title, .countdown-section__subtitle, .countdown, .details-section__title, .detail-card, .rsvp-btn')
+                        .forEach(el => el.classList.add('animate-in'));
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('.poll-section, .countdown-section, .details-section').forEach(section => animateOnScroll.observe(section));
+
+        createParticles();
+        if (document.readyState !== 'loading') { createParticles(); }
+
+        document.querySelector('.share-btn[aria-label="Copy link"]').addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                const btn = e.currentTarget;
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '✓';
+                setTimeout(() => btn.innerHTML = originalHTML, 2000);
+            } catch (err) {
+                const input = document.createElement('input');
+                input.value = window.location.href;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+            }
+        });
+    </script>
+</body>
+</html>
